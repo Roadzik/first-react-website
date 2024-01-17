@@ -1,0 +1,27 @@
+.navbar{
+    list-style-type: none;
+    background-color: #111315;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 0.3fr;
+    grid-template-rows: 70px;
+    align-items: center;
+    padding: 0px 40px;
+    border-bottom: 1px solid white;
+  }
+ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+input[type=text]{
+  background-color: #29262c;
+  border: 0;
+  width: 400px;
+  color: white;
+  height: 40px;
+  font-size: 1.2rem;
+  border-radius: 5%;
+}
+img{
+  filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(277deg) brightness(121%) contrast(97%);
+}
