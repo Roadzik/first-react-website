@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className='home'>
       <div className='menu' />
-      <div className='postCreator'>
+      <div className='post-creator'>
         <div>
           <img src='user.svg' alt='User' />
           <form action=''>
