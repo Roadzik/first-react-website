@@ -1,33 +1,38 @@
-.home{
+.home {
   height: 100vh;
-    background-color: #111315;
-    color: white;
-    font-size: 1.3rem;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-  }
-.postCreator{
+  background-color: #111315;
+  color: white;
+  font-size: 1.3rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.postCreator {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 40vh;
   border-bottom: 1px solid white;
 }
-.postCreator div{
+
+.postCreator div {
   height: 100%;
 }
-form{
+
+form {
   display: flex;
   flex-direction: column;
   align-items: end;
 }
-textarea{
+
+textarea {
   background-color: #29262c;
   border: 0;
   color: white;
   font-size: 1.2rem;
 }
-input[type=submit]{
+
+input[type=submit] {
   width: 100px;
   height: 50px;
   border: 0;
@@ -35,12 +40,15 @@ input[type=submit]{
   color: white;
   background-color: #305768;
 } 
-.postCreator div img{
+
+.postCreator div img {
   width: 10%;
 }
-.menu{
+
+.menu {
   border-right: 1px solid white;
 }
-.idk{
+
+.idk {
   border-left: 1px solid white;
 }
