@@ -1,5 +1,4 @@
 .home {
-  height: 100vh;
   background-color: #111315;
   color: white;
   font-size: 1.3rem;
@@ -7,16 +6,10 @@
   grid-template-columns: 1fr 2fr 1fr;
 }
 
-.post-creator {
+.main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 40vh;
-  border-bottom: 1px solid white;
-}
-
-.post-creator div {
-  height: 100%;
+  height: fit-content;
 }
 
 form {
@@ -51,4 +44,28 @@ input[type="submit"] {
 
 .idk {
   border-left: 1px solid white;
+}
+
+.post-creator {
+  border-bottom: 1px solid white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.posts{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.post-container {
+  border: 1px solid white;
+  width: 100%;
+  margin: 5% 20%;
+  padding: 5%;
 }
