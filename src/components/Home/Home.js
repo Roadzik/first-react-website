@@ -1,20 +1,25 @@
 import './Home.css'
+import React, { useEffect, useState } from 'react'
 import PostList from '../PostList'
-import { useState } from 'react'
+
+import useFirstRender from '../../hooks/useFirstRender'
 
 const Home = () => {
-  
   const [text, setText] = useState('')
   const [posts, setPosts] = useState([
-    {text:'dasdasdasdasdasdas', id:1}
+    { text: 'dasdasdasdasdasdas', id: 1 }
   ])
 
-  const handleClick = (e) => {
+  const handleClick = (e, arr) => {
     e.preventDefault()
     setText(e.target.parentElement[0].value)
-    setPosts(...posts, { text: text, id:2 } )
   }
-  
+
+  const firstRender = useFirstRender()
+  useEffect(() => {
+    if (!firstRender) { setPosts([...posts, { text, id: 2 }]) }
+  }, [text])
+
   return (
     <div className='home'>
       <div className='menu' />
@@ -23,12 +28,10 @@ const Home = () => {
           <img src='user.svg' alt='User' />
           <form action=''>
             <textarea name='post' id='post' cols='60' rows='10' />
-            <input type='submit' value='ClickMe' onClick={handleClick} />
+            <input type='submit' value='ClickMe' onClick={(e) => handleClick(e, posts)} />
           </form>
         </div>
-        <div className="posts">
-          <PostList posts={posts} />
-        </div>
+        <PostList posts={posts} />
       </div>
       <div className='idk' />
     </div>
