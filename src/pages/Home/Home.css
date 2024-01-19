@@ -25,6 +25,10 @@ textarea {
   font-size: 1.2rem;
 }
 
+form textarea, form input{
+  margin-bottom: 0.8rem;
+}
+
 input[type="submit"] {
   width: 100px;
   height: 50px;
@@ -32,6 +36,7 @@ input[type="submit"] {
   border-radius: 5%;
   color: white;
   background-color: #305768;
+  cursor: pointer;
 }
 
 .post-creator div img {
@@ -64,7 +69,10 @@ input[type="submit"] {
 }
 
 .post-container {
+  width: 650px;
   border: 1px solid white;
   margin: 5% 20%;
   padding: 5%;
+  height: fit-content;
+  overflow-wrap: break-word;
 }
