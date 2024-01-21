@@ -16,7 +16,7 @@ const Home = () => {
 
   const firstRender = useFirstRender()
   useEffect(() => {
-    if (!firstRender && text !== '') { setPosts([...posts, { text, id: ++id}]) }
+    if (!firstRender && text !== '') { setPosts([...posts, { text, id: ++id }]) }
   }, [text])
 
   return (
@@ -27,7 +27,7 @@ const Home = () => {
           <div>
             <img src='user.svg' alt='User' />
             <form action=''>
-              <textarea name='post' id='post' cols='50' rows='8' maxLength={255}/>
+              <textarea name='post' id='post' cols='50' rows='8' maxLength={255} />
               <input type='submit' value='ClickMe' onClick={(e) => handleClick(e, posts)} />
             </form>
           </div>
