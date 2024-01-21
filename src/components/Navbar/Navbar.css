@@ -28,3 +28,7 @@ input[type="text"] {
 img {
   filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(277deg) brightness(121%) contrast(97%);
 }
+
+ul li img{
+  cursor: pointer;
+}

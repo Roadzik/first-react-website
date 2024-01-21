@@ -19,7 +19,9 @@ const Navbar = () => {
           </a>
         </li>
         <li>
-          <img src='user.svg' alt='User' />
+          <a href="/login">
+            <img src='user.svg' alt='User' />
+          </a>
         </li>
       </ul>
     </nav>
