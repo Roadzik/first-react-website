@@ -9,15 +9,20 @@ const Home = () => {
   const [posts, setPosts] = useState([
     { text: 'dasdasdasdasdasdas', id: 1 }
   ])
-  const handleClick = (e, arr) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setText(e.target.parentElement[0].value)
+    fetch('http://localhost:4000/api/postCreation',{
+      method:'POST',
+      headers: {'Content-Type':'application-json'},
+      body: {}
+    })
+    setPosts([...posts, { text, id: ++id }])
   }
 
-  const firstRender = useFirstRender()
-  useEffect(() => {
-    if (!firstRender && text !== '') { setPosts([...posts, { text, id: ++id }]) }
-  }, [text])
+  // const firstRender = useFirstRender()
+  // useEffect(() => {
+  //   if (!firstRender && text !== '') { setPosts([...posts, { text, id: ++id }]) }
+  // }, [text])
 
   return (
     <div className='home'>
@@ -26,9 +31,9 @@ const Home = () => {
         <div className='post-creator'>
           <div>
             <img src='user.svg' alt='User' />
-            <form action=''>
-              <textarea name='post' id='post' cols='50' rows='8' maxLength={255} />
-              <input type='submit' value='ClickMe' onClick={(e) => handleClick(e, posts)} />
+            <form onSubmit={e=>handleSubmit(e)}>
+              <textarea name='post' id='post' cols='50' rows='8' maxLength={255} onChange={e=>setText(e.target.value)}/>
+              <input type='submit' value='ClickMe'/>
             </form>
           </div>
         </div>
