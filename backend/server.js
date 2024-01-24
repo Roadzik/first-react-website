@@ -27,13 +27,25 @@ app.post("/api/postCreation", (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
+	let username = req.body.username;
+	let password = req.body.password;
+
+	if (typeof username != "string" || typeof password != "string") {
+		return res.status(401).json({ message: "Invalid parameters!" }).end();
+	}
 	DB_CONNECTION.query(
-		`SELECT * FROM users WHERE username = '${req.body.username}'`,
+		`SELECT * FROM users WHERE username = ?`,
+		username,
 		async (err, result) => {
 			if (err) throw err;
-			if (result.length !== 1) res.status(401).end();
-			if (await bcrypt_compare(req.body.password, result[0]["password"]))
-				return res.json(result[0]).status(200).end();
+			if (result.length !== 1)
+				return res.status(401).json("Please input correct credentials").end();
+			if (await bcrypt.compare(password, result[0].password)) {
+				delete result[0].password;
+				return res.status(200).json(result[0]).end();
+			} else {
+				return res.status(401).json("Please input correct credentials").end();
+			}
 		}
 	);
 });
@@ -41,32 +53,34 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/register", async (req, res) => {
 	let username = req.body.username;
 	let password = req.body.password;
-
 	if (typeof username != "string" || typeof password != "string") {
 		return res.json({ message: "Invalid parameters!" }).status(401).end();
 	}
 
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(req.body.password, salt);
+	const hashedPassword = await bcrypt.hash(password, 10);
 
 	DB_CONNECTION.query(
 		"SELECT * FROM users WHERE username = ?",
 		username,
 		(err, result) => {
-			if (result.length > 0)
+			if (result.length > 0) {
 				return res
 					.status(409)
 					.json({ message: "User with this username already exists" })
 					.end();
-		}
-	);
-
-	DB_CONNECTION.query(
-		"INSERT INTO users(username,displayName,password) VALUES(?,?,?)",
-		[username, username, hashedPassword],
-		(err) => {
-			if (err) throw err;
-			return res.status(200);
+			} else {
+				DB_CONNECTION.query(
+					"INSERT INTO users(username,displayName,password) VALUES(?,?,?)",
+					[username, username, hashedPassword],
+					(err) => {
+						if (err) throw err;
+						return res
+							.status(200)
+							.json({ message: "User Created", created: 1 })
+							.end();
+					}
+				);
+			}
 		}
 	);
 });
