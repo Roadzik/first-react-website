@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PasswordRequirements from "../../components/PasswordRequirements/PasswordRequirements.js";
+import PasswordRequirements from "../../components/PasswordRequirements/PasswordRequirements";
 import "./Register.css";
 const Register = () => {
 	const [username, setUsername] = useState("");
