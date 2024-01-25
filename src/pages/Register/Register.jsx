@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PasswordRequirements from "../../components/PasswordRequirements/PasswordRequirements";
 import "./Register.css";
 const Register = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const [color, setColor] = useState(".error");
 	const handleUserInput = () => {
 		if (
 			username === "" ||
@@ -15,13 +16,16 @@ const Register = () => {
 			!/[A-Z]/.test(password) ||
 			!/[a-z]/.test(password) ||
 			!/[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(password)
-		)
+		) {
 			return 0;
-		return [setError("")];
+		}
+		return 1;
 	};
 	async function handleSubmit(e) {
 		e.preventDefault();
-		if (!handleUserInput()) return setError("Please fill the data");
+		if (!handleUserInput()) {
+			return { message: "Please fill the data" };
+		}
 
 		let response = await fetch("http://localhost:4000/api/register", {
 			method: "POST",
@@ -34,12 +38,35 @@ const Register = () => {
 		return response.json();
 	}
 
+	useEffect(() => {
+		if (handleUserInput()) {
+			setColor("green");
+			setError("Data filled");
+		} else {
+			setColor("red");
+			setError("Please fill the data");
+		}
+	}, [password]);
+
 	return (
 		<div className='register-container'>
+			<h2>Register</h2>
 			<div className='form-container'>
-				{error.length === 0 ? "" : <div className='error'>{error}</div>}
+				{error.length === 0 ? (
+					""
+				) : (
+					<div style={{ color: color }} className='error'>
+						{error}
+					</div>
+				)}
 				<form
-					onSubmit={(e) => handleSubmit(e).then((data) => console.log(data))}
+					onSubmit={(e) =>
+						handleSubmit(e).then((data) => {
+							setError(data.message);
+							setColor("green");
+							if (!data.created) setColor("red");
+						})
+					}
 					method='POST'
 				>
 					<label htmlFor='username'>Username</label>
@@ -54,7 +81,9 @@ const Register = () => {
 						type='password'
 						name='password'
 						id='password'
-						onInput={(e) => setPassword(e.target.value)}
+						onInput={(e) => {
+							setPassword(e.target.value);
+						}}
 					/>
 					<PasswordRequirements password={password} />
 					<input type='submit' value='Register' />
