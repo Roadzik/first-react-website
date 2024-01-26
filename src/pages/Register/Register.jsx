@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
 import PasswordRequirements from "../../components/PasswordRequirements/PasswordRequirements";
 import "./Register.css";
+import { Navigate } from "react-router-dom";
+
 const Register = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [color, setColor] = useState(".error");
+	useEffect(() => {
+		if (handleUserInput()) {
+			setColor("green");
+			setError("Data filled");
+		} else {
+			setColor("red");
+			setError("Please fill the data");
+		}
+	}, [password]);
+
 	const handleUserInput = () => {
 		if (
 			username === "" ||
@@ -27,7 +39,7 @@ const Register = () => {
 			return { message: "Please fill the data" };
 		}
 
-		let response = await fetch("http://localhost:4000/api/register", {
+		const response = await fetch("http://localhost:4000/api/register", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -37,60 +49,53 @@ const Register = () => {
 
 		return response.json();
 	}
-
-	useEffect(() => {
-		if (handleUserInput()) {
-			setColor("green");
-			setError("Data filled");
-		} else {
-			setColor("red");
-			setError("Please fill the data");
-		}
-	}, [password]);
-
-	return (
-		<div className='register-container'>
-			<h2>Register</h2>
-			<div className='form-container'>
-				{error.length === 0 ? (
-					""
-				) : (
-					<div style={{ color: color }} className='error'>
-						{error}
-					</div>
-				)}
-				<form
-					onSubmit={(e) =>
-						handleSubmit(e).then((data) => {
-							setError(data.message);
-							setColor("green");
-							if (!data.created) setColor("red");
-						})
-					}
-					method='POST'
-				>
-					<label htmlFor='username'>Username</label>
-					<input
-						type='text'
-						name='username'
-						id='username'
-						onInput={(e) => setUsername(e.target.value)}
-					/>
-					<label htmlFor='password'>Password</label>
-					<input
-						type='password'
-						name='password'
-						id='password'
-						onInput={(e) => {
-							setPassword(e.target.value);
-						}}
-					/>
-					<PasswordRequirements password={password} />
-					<input type='submit' value='Register' />
-				</form>
+	if (window.localStorage.getItem("authenticated"))
+		return <Navigate replace to='/' />;
+	else {
+		return (
+			<div className='register-container'>
+				<h2>Register</h2>
+				<div className='form-container'>
+					{error.length === 0 ? (
+						""
+					) : (
+						<div style={{ color }} className='error'>
+							{error}
+						</div>
+					)}
+					<form
+						onSubmit={(e) =>
+							handleSubmit(e).then((data) => {
+								setError(data.message);
+								setColor("green");
+								if (!data.created) setColor("red");
+							})
+						}
+						method='POST'
+					>
+						<label htmlFor='username'>Username</label>
+						<input
+							type='text'
+							name='username'
+							id='username'
+							onInput={(e) => setUsername(e.target.value)}
+						/>
+						<label htmlFor='password'>Password</label>
+						<input
+							type='password'
+							name='password'
+							id='password'
+							onInput={(e) => {
+								setPassword(e.target.value);
+							}}
+						/>
+						<PasswordRequirements password={password} />
+						<input type='submit' value='Register' />
+					</form>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 export default Register;

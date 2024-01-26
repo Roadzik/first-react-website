@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import "./Navbar.css";
 
 const Navbar = () => {
+	const handleClick = () => {
+		localStorage.clear();
+	};
 	return (
 		<nav className='navbar'>
 			<a href='/'>
@@ -24,19 +28,37 @@ const Navbar = () => {
 						<img src='message.svg' alt='Messages' />
 					</a>
 				</li>
-				<li>
-					{/* <a href='/login'>
-            <img src='user.svg' alt='User' />
-          </a> */}
-					<a href='/login'>
-						<button>Login</button>
-					</a>
-				</li>
-				<li>
-					<a href='/register'>
-						<button>Register</button>
-					</a>
-				</li>
+				{!window.localStorage.getItem("authenticated") ? (
+					<>
+						<li>
+							<a href='/login'>
+								<button>Login</button>
+							</a>
+						</li>
+						<li>
+							<a href='/register'>
+								<button>Register</button>
+							</a>
+						</li>
+					</>
+				) : (
+					<>
+						<li>
+							<a href='/profile'>
+								<img
+									src={window.localStorage.getItem("profilePicture")}
+									alt='User'
+									className='user'
+								/>
+							</a>
+						</li>
+						<li>
+							<a href=''>
+								<button onClick={handleClick}>Log out</button>
+							</a>
+						</li>
+					</>
+				)}
 			</ul>
 		</nav>
 	);

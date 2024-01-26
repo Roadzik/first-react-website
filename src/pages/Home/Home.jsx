@@ -1,20 +1,18 @@
 import "./Home.css";
 import React, { useEffect, useState } from "react";
 import PostList from "../../components/PostList";
-import useFirstRender from "../../hooks/useFirstRender";
 
-let id = 1;
 const Home = () => {
 	const [text, setText] = useState("");
-	const [posts, setPosts] = useState([{ text: "dasdasdasdasdasdas", id: 1 }]);
+	const [posts, setPosts] = useState([{ text: "dasdasdasdasdasdas" }]);
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		fetch("http://localhost:4000/api/postCreation", {
 			method: "POST",
 			headers: { "Content-Type": "application-json" },
-			body: {},
+			body: JSON.stringify({ text }),
 		});
-		setPosts([...posts, { text, id: ++id }]);
+		setPosts([...posts, { text }]);
 	};
 
 	// const firstRender = useFirstRender()
