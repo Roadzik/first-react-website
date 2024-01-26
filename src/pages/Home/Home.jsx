@@ -4,7 +4,17 @@ import PostList from "../../components/PostList";
 
 const Home = () => {
 	const [text, setText] = useState("");
-	const [posts, setPosts] = useState([{ text: "dasdasdasdasdasdas" }]);
+	const [posts, setPosts] = useState(null);
+
+	const getAllPosts = async () => {
+		const response = await fetch("http://localhost:4000/api/posts", {
+			method: "POST",
+			headers: { "Content-Type": "application-json" },
+			body: {},
+		});
+		return response.json();
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		fetch("http://localhost:4000/api/postCreation", {
@@ -15,10 +25,12 @@ const Home = () => {
 		setPosts([...posts, { text }]);
 	};
 
-	// const firstRender = useFirstRender()
-	// useEffect(() => {
-	//   if (!firstRender && text !== '') { setPosts([...posts, { text, id: ++id }]) }
-	// }, [text])
+	useEffect(() => {
+		getAllPosts().then((data) => {
+			setPosts(data);
+			console.log(posts);
+		});
+	}, []);
 
 	return (
 		<div className='home'>
@@ -26,7 +38,15 @@ const Home = () => {
 			<div className='main'>
 				<div className='post-creator'>
 					<div>
-						<img src='user.svg' alt='User' />
+						{window.localStorage.getItem("authenticated") ? (
+							<img
+								src={window.localStorage.getItem("profilePicture")}
+								alt='User'
+								className='profile-picture'
+							/>
+						) : (
+							<></>
+						)}
 						<form onSubmit={(e) => handleSubmit(e)}>
 							<textarea
 								name='post'

@@ -127,4 +127,14 @@ app.post("/api/register", async (req, res) => {
 	);
 });
 
+app.post("/api/posts", (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT p.id, p.text, p.creationTime, u.profilePicture FROM posts p INNER JOIN users  u ON p.userID = u.id",
+		(err, result) => {
+			if (err) throw err;
+			res.status(200).json(result).end();
+		}
+	);
+});
+
 app.listen(process.env.PORT);

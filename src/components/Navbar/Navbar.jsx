@@ -48,7 +48,7 @@ const Navbar = () => {
 								<img
 									src={window.localStorage.getItem("profilePicture")}
 									alt='User'
-									className='user'
+									className='profile-picture'
 								/>
 							</a>
 						</li>
