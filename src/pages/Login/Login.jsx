@@ -32,7 +32,8 @@ const Login = () => {
 		}
 		return [setError("")];
 	};
-	async function handleSubmit(e) {
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!handleUserInput()) return setError("Please fill the data");
 
@@ -44,7 +45,8 @@ const Login = () => {
 			body: JSON.stringify({ username, password }),
 		});
 		return response.json();
-	}
+	};
+
 	if (window.localStorage.getItem("authenticated"))
 		return <Navigate replace to='/' />;
 	else {
@@ -63,7 +65,10 @@ const Login = () => {
 									);
 									fetchImage(window.localStorage.getItem("accessToken")).then(
 										(data) => {
-											window.localStorage.setItem("profilePicture", data);
+											window.localStorage.setItem(
+												"profilePicture",
+												data || "user.svg"
+											);
 										}
 									);
 								}

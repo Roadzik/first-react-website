@@ -1,6 +1,6 @@
 import "./Home.css";
 import React, { useEffect, useState } from "react";
-import PostList from "../../components/PostList";
+import PostList from "../../components/PostList/PostList";
 
 const Home = () => {
 	const [text, setText] = useState("");
@@ -15,20 +15,22 @@ const Home = () => {
 		return response.json();
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		fetch("http://localhost:4000/api/postCreation", {
+		const response = await fetch("http://localhost:4000/api/postCreation", {
 			method: "POST",
-			headers: { "Content-Type": "application-json" },
+			headers: {
+				"Content-Type": "application/json",
+				authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+			},
 			body: JSON.stringify({ text }),
 		});
-		setPosts([...posts, { text }]);
+		return response.json();
 	};
 
 	useEffect(() => {
 		getAllPosts().then((data) => {
 			setPosts(data);
-			console.log(posts);
 		});
 	}, []);
 
@@ -47,7 +49,16 @@ const Home = () => {
 						) : (
 							<></>
 						)}
-						<form onSubmit={(e) => handleSubmit(e)}>
+						<form
+							method='POST'
+							onSubmit={(e) =>
+								handleSubmit(e).then(() => {
+									getAllPosts().then((data) => {
+										setPosts(data);
+									});
+								})
+							}
+						>
 							<textarea
 								name='post'
 								id='post'

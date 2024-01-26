@@ -31,7 +31,7 @@ const validateData = (username, password) => {
 function authenticateToken(req, res, next) {
 	const authHeader = req.headers["authorization"];
 	const token = authHeader && authHeader.split(" ")[1];
-	if (token == null) return res.sendStatus(401);
+	if (token == null) return res.status(401).json({ message: "auth error" });
 
 	jwt.verify(token, process.env.ACCESS_TOKEN, (err, userData) => {
 		if (err) return res.sendStatus(403);
@@ -40,14 +40,14 @@ function authenticateToken(req, res, next) {
 	});
 }
 
-app.post("/api/postCreation", (req, res) => {
-	const TEXT = req.body.TEXT;
+app.post("/api/postCreation", authenticateToken, (req, res) => {
+	const TEXT = req.body.text;
 	if (typeof TEXT !== "string") {
 		return res.status(401).json({ message: "Invalid parameters!" }).end();
 	}
 	DB_CONNECTION.query(
-		"INSERT INTO posts(text, creationTime) VALUES (?,?)",
-		[TEXT, Date.now()],
+		"INSERT INTO posts(text, userID) VALUES (?,?)",
+		[TEXT, req.userData.id],
 		(err, result) => {
 			if (err) throw err;
 			return res.status(201).json("Post created").end();
@@ -129,7 +129,7 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/posts", (req, res) => {
 	DB_CONNECTION.query(
-		"SELECT p.id, p.text, p.creationTime, u.profilePicture FROM posts p INNER JOIN users  u ON p.userID = u.id",
+		"SELECT p.id, p.text, p.creationTime, u.profilePicture, u.displayName FROM posts p INNER JOIN users  u ON p.userID = u.id ORDER BY id DESC",
 		(err, result) => {
 			if (err) throw err;
 			res.status(200).json(result).end();

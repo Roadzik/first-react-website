@@ -4,7 +4,7 @@
 	font-size: 1.3rem;
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr;
-
+	padding-top: 72px;
 	.main {
 		display: flex;
 		flex-direction: column;
@@ -50,7 +50,6 @@
 	.idk {
 		border-left: 1px solid white;
 	}
-
 	.post-creator {
 		border-bottom: 1px solid white;
 		width: 100%;
@@ -58,26 +57,5 @@
 		flex-direction: column;
 		align-items: center;
 		height: 100%;
-	}
-
-	.posts {
-		width: 100%;
-		height: fit-content;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-	}
-
-	.post-container {
-		width: 650px;
-		border: 1px solid white;
-		margin: 5% 20%;
-		padding: 5%;
-		height: fit-content;
-		overflow-wrap: break-word;
-	}
-	.post-container img {
-		height: 55;
-		width: 55;
 	}
 }

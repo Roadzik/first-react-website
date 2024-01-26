@@ -6,9 +6,9 @@ import Register from "./pages/Register/Register";
 function App() {
 	return (
 		<div className='App'>
-			<Navbar />
 			<BrowserRouter>
 				<div className='content'>
+					<Navbar />
 					<Routes>
 						<Route index path='/' element={<Home />} />
 						<Route path='/login' element={<Login />} />

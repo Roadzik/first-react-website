@@ -5,6 +5,9 @@ const Navbar = () => {
 	const handleClick = () => {
 		localStorage.clear();
 	};
+	useEffect(() => {
+		console.log("navbar loaded");
+	}, []);
 	return (
 		<nav className='navbar'>
 			<a href='/'>
