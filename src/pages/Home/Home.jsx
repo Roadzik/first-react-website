@@ -6,6 +6,18 @@ const Home = () => {
 	const [text, setText] = useState("");
 	const [posts, setPosts] = useState(null);
 
+	const getPostsByUser = async () => {
+		const response = await fetch("http://localhost:4000/api/postsByUser", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application-json",
+				authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+			},
+			body: {},
+		});
+		return response.json();
+	};
+
 	const getAllPosts = async () => {
 		const response = await fetch("http://localhost:4000/api/posts", {
 			method: "POST",
@@ -31,6 +43,7 @@ const Home = () => {
 	useEffect(() => {
 		getAllPosts().then((data) => {
 			setPosts(data);
+			getPostsByUser();
 		});
 	}, []);
 

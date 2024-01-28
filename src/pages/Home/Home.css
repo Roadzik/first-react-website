@@ -57,5 +57,11 @@
 		flex-direction: column;
 		align-items: center;
 		height: 100%;
+
+		div div {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
 	}
 }

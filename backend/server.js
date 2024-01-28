@@ -137,4 +137,16 @@ app.post("/api/posts", (req, res) => {
 	);
 });
 
+app.post("/api/postsByUser", authenticateToken, (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT IF(current_timestamp()-p.creationTime,1,0) FROM posts p INNER JOIN users u ON p.userID = u.id WHERE u.id = ? ORDER BY p.id DESC LIMIT 1",
+		req.userData.id,
+		(err, result) => {
+			if (err) throw err;
+			console.log(result);
+			res.status(200).json(result[0].creationTime).end();
+		}
+	);
+});
+
 app.listen(process.env.PORT);
