@@ -38,11 +38,13 @@
 			cursor: pointer;
 		}
 	}
-
-	.post-creator div img {
-		width: 10%;
+	.user-data {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 21%;
 	}
-
 	.menu {
 		border-right: 1px solid white;
 	}

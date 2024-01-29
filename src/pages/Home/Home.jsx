@@ -45,15 +45,18 @@ const Home = () => {
 				<div className='post-creator'>
 					<div>
 						<div>
-							{window.localStorage.getItem("authenticated") ? (
-								<img
-									src={window.localStorage.getItem("profilePicture")}
-									alt='User'
-									className='profile-picture'
-								/>
-							) : (
-								<></>
-							)}
+							<div className='user-data'>
+								{window.localStorage.getItem("authenticated") ? (
+									<img
+										src={window.localStorage.getItem("profilePicture")}
+										alt='User'
+										className='profile-picture'
+									/>
+								) : (
+									<></>
+								)}
+								<p>{window.localStorage.getItem("username")}</p>
+							</div>
 							{window.localStorage.getItem("authenticated") && time != null ? (
 								timeDifference > 120 ? (
 									<p style={{ color: "green" }}>You can post</p>

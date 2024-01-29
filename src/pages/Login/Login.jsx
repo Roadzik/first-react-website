@@ -53,6 +53,7 @@ const Login = () => {
 								if (data == undefined || data == null) return;
 								if (data.authenticated) {
 									window.localStorage.setItem("accessToken", data.accessToken);
+									window.localStorage.setItem("username", data.username);
 									window.localStorage.setItem(
 										"authenticated",
 										data.authenticated

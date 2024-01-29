@@ -5,6 +5,7 @@ const mysql = require("mysql");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 app.use(express.json());
 app.use(cors());
@@ -81,7 +82,11 @@ app.post("/api/login", async (req, res) => {
 				const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN);
 				return res
 					.status(200)
-					.json({ accessToken: accessToken, authenticated: 1 })
+					.json({
+						accessToken: accessToken,
+						authenticated: 1,
+						username: result[0].username,
+					})
 					.end();
 			} else {
 				return res
@@ -100,7 +105,6 @@ app.post("/api/register", async (req, res) => {
 		return res.status(401).json({ message: "Invalid parameters!" }).end();
 
 	const hashedPassword = await bcrypt.hash(password, 10);
-
 	DB_CONNECTION.query(
 		"SELECT * FROM users WHERE username = ?",
 		username,
@@ -112,8 +116,13 @@ app.post("/api/register", async (req, res) => {
 					.end();
 			} else {
 				DB_CONNECTION.query(
-					"INSERT INTO users(username,displayName,password) VALUES(?,?,?)",
-					[username, username, hashedPassword],
+					"INSERT INTO users(username,displayName,password,profileId) VALUES(?,?,?,?)",
+					[
+						username,
+						username,
+						hashedPassword,
+						crypto.randomBytes(16).toString("hex"),
+					],
 					(err) => {
 						if (err) throw err;
 						return res
