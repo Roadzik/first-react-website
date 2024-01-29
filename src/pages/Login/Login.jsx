@@ -54,6 +54,7 @@ const Login = () => {
 								if (data.authenticated) {
 									window.localStorage.setItem("accessToken", data.accessToken);
 									window.localStorage.setItem("username", data.username);
+									window.localStorage.setItem("profileId", data.profileId);
 									window.localStorage.setItem(
 										"authenticated",
 										data.authenticated

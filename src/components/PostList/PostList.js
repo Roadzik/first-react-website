@@ -9,12 +9,14 @@ const PostList = (props) => {
 				<div className='post-container' key={post.id}>
 					<div className='top'>
 						<div>
-							<img
-								src={post.profilePicture || "user.svg"}
-								alt='User'
-								className='profile-picture'
-							/>
-							<h4>{post.displayName}</h4>
+							<a href={"/profile/" + post.profileId}>
+								<img
+									src={"/" + (post.profilePicture || "user.svg")}
+									alt='User'
+									className='profile-picture'
+								/>
+								<h4>{post.displayName}</h4>
+							</a>
 						</div>
 						<p>{post.creationTime}</p>
 					</div>

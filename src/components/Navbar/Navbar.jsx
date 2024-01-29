@@ -11,7 +11,7 @@ const Navbar = () => {
 	return (
 		<nav className='navbar'>
 			<a href='/'>
-				<img src='home.svg' alt='Home' />
+				<img src='/home.svg' alt='Home' />
 			</a>
 			<input
 				type='text'
@@ -23,12 +23,12 @@ const Navbar = () => {
 			<ul>
 				<li>
 					<a href='/notifications'>
-						<img src='notification.svg' alt='Notifications' />
+						<img src='/notification.svg' alt='Notifications' />
 					</a>
 				</li>
 				<li>
 					<a href='/messages'>
-						<img src='message.svg' alt='Messages' />
+						<img src='/message.svg' alt='Messages' />
 					</a>
 				</li>
 				{!window.localStorage.getItem("authenticated") ? (
@@ -47,9 +47,9 @@ const Navbar = () => {
 				) : (
 					<>
 						<li>
-							<a href='/profile'>
+							<a href={"/profile/" + window.localStorage.getItem("profileId")}>
 								<img
-									src={window.localStorage.getItem("profilePicture")}
+									src={"/" + window.localStorage.getItem("profilePicture")}
 									alt='User'
 									className='profile-picture'
 								/>

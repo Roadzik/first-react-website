@@ -23,6 +23,12 @@
 		align-content: space-between;
 		padding: 0.3rem;
 	}
+	a {
+		text-decoration: none;
+		color: white;
+		display: flex;
+		flex-direction: row;
+	}
 	.post-container img {
 		height: 55;
 		width: 55;

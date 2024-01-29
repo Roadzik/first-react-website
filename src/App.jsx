@@ -14,7 +14,7 @@ function App() {
 						<Route index path='/' element={<Home />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/register' element={<Register />} />
-						<Route path='profile' element={<Profile />}></Route>
+						<Route path='/profile/:id' element={<Profile />} />
 					</Routes>
 				</div>
 			</BrowserRouter>

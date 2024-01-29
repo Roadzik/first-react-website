@@ -48,7 +48,7 @@ const Home = () => {
 							<div className='user-data'>
 								{window.localStorage.getItem("authenticated") ? (
 									<img
-										src={window.localStorage.getItem("profilePicture")}
+										src={"/" + window.localStorage.getItem("profilePicture")}
 										alt='User'
 										className='profile-picture'
 									/>

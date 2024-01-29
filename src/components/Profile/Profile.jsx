@@ -1,26 +1,43 @@
 import "./Profile.css";
-
+import PostList from "../../components/PostList/PostList";
+import { useState, useEffect } from "react";
+import getAllPosts from "../../hooks/getAllPosts";
+import { useParams } from "react-router-dom";
+import getUserList from "../../hooks/getUserList";
 const Profile = () => {
+	const { id } = useParams();
+	const [posts, setPosts] = useState([]);
+	const [userData, setUserData] = useState([]);
+	useEffect(() => {
+		getAllPosts(id).then((data) => {
+			setPosts(data);
+		});
+		getUserList(id).then((data) => {
+			setUserData(data);
+		});
+	}, []);
 	return (
 		<div className='profile'>
 			<div className='menu'></div>
-			<div className='main'>
-				<div className='data'>
-					<div className='data-container'>
-						<img
-							src={window.localStorage.getItem("profilePicture")}
-							alt=''
-							style={{
-								width: "165px",
-								height: "165px",
-							}}
-							className='profile-picture'
-						/>
-						<p>{window.localStorage.getItem("username")}</p>
+			<div>
+				<div className='main'>
+					<div className='data'>
+						<div className='data-container'>
+							<img
+								src={"/" + userData.profilePicture}
+								alt=''
+								style={{
+									width: "165px",
+									height: "165px",
+								}}
+								className='profile-picture'
+							/>
+							<p>{userData.username}</p>
+						</div>
+						<button>Message</button>
 					</div>
-					<button>Message</button>
 				</div>
-				<p></p>
+				<PostList posts={posts} />
 			</div>
 			<div className='idk'></div>
 		</div>

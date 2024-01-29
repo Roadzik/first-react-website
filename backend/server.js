@@ -85,6 +85,7 @@ app.post("/api/login", async (req, res) => {
 					.json({
 						accessToken: accessToken,
 						authenticated: 1,
+						profileId: result[0].profileId,
 						username: result[0].username,
 					})
 					.end();
@@ -137,8 +138,10 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.post("/api/posts", (req, res) => {
+	if (req.body.id === null || req.body.id === undefined) req.body.id = "%";
 	DB_CONNECTION.query(
-		"SELECT p.id, p.text, p.creationTime, u.profilePicture, u.displayName FROM posts p INNER JOIN users  u ON p.userID = u.id ORDER BY id DESC",
+		"SELECT p.id, p.text, p.creationTime, u.profilePicture, u.displayName, u.profileId FROM posts p INNER JOIN users u ON p.userID = u.id WHERE u.profileId LIKE ? ORDER BY id DESC",
+		req.body.id,
 		(err, result) => {
 			if (err) throw err;
 			res.status(200).json(result).end();
@@ -154,6 +157,18 @@ app.post("/api/postsByUser", authenticateToken, (req, res) => {
 			if (result.length === 0) return res.status(200).json(0).end();
 			if (err) throw err;
 			res.status(200).json(result[0].creationTime).end();
+		}
+	);
+});
+
+app.post("/api/userList", (req, res) => {
+	if (req.body.id === null || req.body.id === undefined) req.body.id = "";
+	DB_CONNECTION.query(
+		"SELECT username, profilePicture FROM users WHERE profileId = ?",
+		req.body.id,
+		(err, result) => {
+			if (err) throw err;
+			res.status(200).json(result[0]).end();
 		}
 	);
 });
