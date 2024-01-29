@@ -162,11 +162,13 @@ app.post("/api/postsByUser", authenticateToken, (req, res) => {
 });
 
 app.post("/api/userList", (req, res) => {
-	if (req.body.id === null || req.body.id === undefined) req.body.id = "";
+	if (req.body.id === null || req.body.id === undefined) return;
 	DB_CONNECTION.query(
 		"SELECT username, profilePicture FROM users WHERE profileId = ?",
 		req.body.id,
 		(err, result) => {
+			if (result.length === 0)
+				res.status(404).json({ message: "user not found", found: 404 }).end();
 			if (err) throw err;
 			res.status(200).json(result[0]).end();
 		}

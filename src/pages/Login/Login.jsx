@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Login.css";
 import { Navigate } from "react-router-dom";
 import handleUserInput from "../../hooks/handleUserInput";
