@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Login.css";
 import { Navigate } from "react-router-dom";
+import handleUserInput from "../../hooks/handleUserInput";
 
 const Login = () => {
 	const [username, setUsername] = useState("");
@@ -21,21 +22,13 @@ const Login = () => {
 		return response.json();
 	};
 
-	const handleUserInput = () => {
-		if (
-			username === "" ||
-			username == null ||
-			password === "" ||
-			password == null
-		) {
-			return 0;
-		}
-		return [setError("")];
-	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (!handleUserInput()) return setError("Please fill the data");
+		if (!handleUserInput(username, password)) {
+			return setError("Please fill the data");
+		} else {
+			setError("");
+		}
 
 		const response = await fetch("http://localhost:4000/api/login", {
 			method: "POST",
@@ -57,6 +50,7 @@ const Login = () => {
 					<form
 						onSubmit={(e) =>
 							handleSubmit(e).then((data) => {
+								if (data == undefined || data == null) return;
 								if (data.authenticated) {
 									window.localStorage.setItem("accessToken", data.accessToken);
 									window.localStorage.setItem(
