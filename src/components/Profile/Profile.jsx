@@ -2,7 +2,7 @@ import "./Profile.css";
 import PostList from "../../components/PostList/PostList";
 import { useState, useEffect } from "react";
 import getAllPosts from "../../hooks/getAllPosts";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import getUserList from "../../hooks/getUserList";
 import { Navigate } from "react-router-dom";
 
@@ -41,7 +41,9 @@ const Profile = () => {
 							{id == window.localStorage.getItem("profileId") ? (
 								<button>Edit</button>
 							) : (
-								<button>Message</button>
+								<button>
+									<Link to='/messages'>Message</Link>
+								</button>
 							)}
 						</div>
 					</div>

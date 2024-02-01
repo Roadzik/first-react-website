@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 	const handleClick = () => {
@@ -10,9 +11,9 @@ const Navbar = () => {
 	}, []);
 	return (
 		<nav className='navbar'>
-			<a href='/'>
+			<Link to='/'>
 				<img src='/home.svg' alt='Home' />
-			</a>
+			</Link>
 			<input
 				type='text'
 				name=''
@@ -22,43 +23,43 @@ const Navbar = () => {
 			/>
 			<ul>
 				<li>
-					<a href='/notifications'>
+					<Link to='/notifications'>
 						<img src='/notification.svg' alt='Notifications' />
-					</a>
+					</Link>
 				</li>
 				<li>
-					<a href='/messages'>
+					<Link to='/messages'>
 						<img src='/message.svg' alt='Messages' />
-					</a>
+					</Link>
 				</li>
 				{!window.localStorage.getItem("authenticated") ? (
 					<>
 						<li>
-							<a href='/login'>
+							<Link to='/login'>
 								<button>Login</button>
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href='/register'>
+							<Link to='/register'>
 								<button>Register</button>
-							</a>
+							</Link>
 						</li>
 					</>
 				) : (
 					<>
 						<li>
-							<a href={"/profile/" + window.localStorage.getItem("profileId")}>
+							<Link to={"/profile/" + window.localStorage.getItem("profileId")}>
 								<img
 									src={"/" + window.localStorage.getItem("profilePicture")}
 									alt='User'
 									className='profile-picture'
 								/>
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href=''>
+							<Link to=''>
 								<button onClick={handleClick}>Log out</button>
-							</a>
+							</Link>
 						</li>
 					</>
 				)}

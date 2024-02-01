@@ -17,6 +17,10 @@
 	.idk {
 		border-left: 1px solid white;
 	}
+	a {
+		text-decoration: none;
+		color: white;
+	}
 	.main {
 		display: flex;
 		flex-direction: column;
