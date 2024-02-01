@@ -40,7 +40,7 @@
 	button {
 		width: 100px;
 		height: 50px;
-		border: 0;
+		border: 1px solid #305768;
 		border-radius: 5%;
 		color: white;
 		background-color: #305768;
@@ -49,9 +49,7 @@
 	}
 	button:hover {
 		background-color: #111315;
-		color: white;
-		border: 1px solid #305768;
-		transition: all 0.2s ease-in;
+		transition: all 0.2s ease-in-out;
 	}
 	a {
 		display: flex;

@@ -38,7 +38,11 @@ const Profile = () => {
 								/>
 								<p>{userData.username}</p>
 							</div>
-							<button>Message</button>
+							{id == window.localStorage.getItem("profileId") ? (
+								<button>Edit</button>
+							) : (
+								<button>Message</button>
+							)}
 						</div>
 					</div>
 					<PostList posts={posts} />
