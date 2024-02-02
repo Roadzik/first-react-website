@@ -56,9 +56,7 @@ const Profile = () => {
 								<button>Edit</button>
 							) : (
 								<button onClick={createRecipent}>
-									<Link to='/messages' state={{ userData, id: id }}>
-										Message
-									</Link>
+									<Link to='/messages'>Message</Link>
 								</button>
 							)}
 						</div>
