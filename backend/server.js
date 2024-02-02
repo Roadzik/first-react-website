@@ -192,7 +192,7 @@ app.post("/api/recipents", authenticateToken, (req, res) => {
 app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
 	console.log(req.body.users);
 	DB_CONNECTION.query(
-		"SELECT username, profilePicture FROM users WHERE profileId IN (?)",
+		"SELECT username, profilePicture, profileId FROM users WHERE profileId IN (?)",
 		req.body.users,
 		(err, result) => {
 			if (err) throw err;
@@ -207,6 +207,18 @@ app.post("/api/createRecipent", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
 		"INSERT INTO messages(senderId, recipentId) VALUES(?, ?)",
 		[req.body.senderId, req.body.recipentId],
+		(err, result) => {
+			if (err) throw err;
+			return;
+		}
+	);
+});
+
+app.post("/api/getMessages", authenticateToken, (req, res) => {
+	console.log(req.body);
+	DB_CONNECTION.query(
+		"SELECT * FROM messages WHERE recipentId = ?",
+		[req.body.recipentId],
 		(err, result) => {
 			if (err) throw err;
 			return;
