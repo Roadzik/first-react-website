@@ -18,6 +18,20 @@ const Profile = () => {
 			setUserData(data);
 		});
 	}, []);
+	const createRecipent = () => {
+		fetch("http://localhost:4000/api/createRecipent", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+			},
+			body: JSON.stringify({
+				senderId: window.localStorage.getItem("profileId"),
+				recipentId: id,
+			}),
+		});
+	};
+	console.log(userData);
 	if (userData.found === 404) return <Navigate replace to='/' />;
 	else {
 		return (
@@ -41,8 +55,10 @@ const Profile = () => {
 							{id == window.localStorage.getItem("profileId") ? (
 								<button>Edit</button>
 							) : (
-								<button>
-									<Link to='/messages'>Message</Link>
+								<button onClick={createRecipent}>
+									<Link to='/messages' state={{ userData, id: id }}>
+										Message
+									</Link>
 								</button>
 							)}
 						</div>

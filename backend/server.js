@@ -37,6 +37,7 @@ function authenticateToken(req, res, next) {
 	jwt.verify(token, process.env.ACCESS_TOKEN, (err, userData) => {
 		if (err) return res.sendStatus(403);
 		req.userData = userData;
+		console.log("token authorized");
 		next();
 	});
 }
@@ -171,6 +172,44 @@ app.post("/api/userList", (req, res) => {
 				res.status(404).json({ message: "user not found", found: 404 }).end();
 			if (err) throw err;
 			res.status(200).json(result[0]).end();
+		}
+	);
+});
+
+app.post("/api/recipents", authenticateToken, (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT DISTINCT(m.recipentId) FROM messages m INNER JOIN users u ON u.profileId = ?",
+		req.body.senderId,
+		(err, result) => {
+			if (err) throw err;
+			if (result.length === 0)
+				return res.status(200).json({ message: "No Recipents Found" }).end();
+			res.status(200).json(result).end();
+		}
+	);
+});
+
+app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
+	console.log(req.body.users);
+	DB_CONNECTION.query(
+		"SELECT username, profilePicture FROM users WHERE profileId IN (?)",
+		req.body.users,
+		(err, result) => {
+			if (err) throw err;
+			if (result.length === 0)
+				return res.status(200).json({ message: "No Recipents Found" }).end();
+			res.status(200).json(result).end();
+		}
+	);
+});
+
+app.post("/api/createRecipent", authenticateToken, (req, res) => {
+	DB_CONNECTION.query(
+		"INSERT INTO messages(senderId, recipentId) VALUES(?, ?)",
+		[req.body.senderId, req.body.recipentId],
+		(err, result) => {
+			if (err) throw err;
+			return;
 		}
 	);
 });

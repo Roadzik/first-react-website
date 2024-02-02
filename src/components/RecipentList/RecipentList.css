@@ -1,0 +1,14 @@
+.recipent-list {
+	div {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem 3rem;
+		border-bottom: 1px solid white;
+	}
+	h4 {
+		color: white;
+		font-size: 1.4rem;
+	}
+}

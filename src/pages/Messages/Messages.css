@@ -1,0 +1,9 @@
+.messages {
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	grid-template-rows: 100vh;
+	background-color: #111315;
+	.message-list {
+		border-right: 1px solid white;
+	}
+}
