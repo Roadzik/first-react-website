@@ -1,34 +1,28 @@
 import "./Messages.css";
 import { useEffect, useState } from "react";
 import RecipentList from "../../components/RecipentList/RecipentList";
+import Conversation from "../../components/Conversation/Conversation";
+import getRecipentsData from "../../hooks/getRecipentData";
+import getRecipent from "../../hooks/getRecipent";
+
 const Messages = () => {
 	const [users, setUsers] = useState(null);
 	const [recipents, setRecipents] = useState([]);
+	const [messages, setMessages] = useState([]);
 	let userIds = [];
-	const getRecipent = async () => {
-		const response = await fetch("http://localhost:4000/api/recipents", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
-			},
-			body: JSON.stringify({
-				senderId: window.localStorage.getItem("profileId"),
-			}),
-		});
-		return response.json();
-	};
 
-	const getRecipentsData = async () => {
-		const response = await fetch("http://localhost:4000/api/getRecipentsData", {
+	const fetchMessages = async (...props) => {
+		const response = await fetch("http://localhost:4000/api/getMessages", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
 			},
-			body: JSON.stringify({ users }),
+			body: JSON.stringify(props),
 		});
-		return response.json();
+		response.json().then((data) => {
+			setMessages(data);
+		});
 	};
 
 	useEffect(() => {
@@ -41,7 +35,7 @@ const Messages = () => {
 			});
 		}
 		if (users !== null) {
-			getRecipentsData().then((data) => {
+			getRecipentsData(users).then((data) => {
 				setRecipents(data);
 			});
 		}
@@ -49,9 +43,21 @@ const Messages = () => {
 	return (
 		<div className='messages'>
 			<div className='message-list'>
-				<RecipentList recipents={recipents} />
+				<RecipentList recipents={recipents} fetchMessages={fetchMessages} />
 			</div>
-			<div className='message-display'></div>
+			<div className='message-display'>
+				{messages.length !== 0 ? (
+					<>
+						<Conversation messages={messages} recipents={recipents} />
+						<div className='send-message'>
+							<textarea name='' id='' cols='170' rows='7'></textarea>
+							<img src='send.svg' alt='' className='send-icon' />
+						</div>
+					</>
+				) : (
+					<></>
+				)}
+			</div>
 		</div>
 	);
 };

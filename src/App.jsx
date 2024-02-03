@@ -20,8 +20,8 @@ function App() {
 						<Route path='/profile/:id' element={<Profile />} />
 						<Route path='/messages' element={<Messages />}></Route>
 					</Routes>
+					<Footer />
 				</div>
-				<Footer />
 			</BrowserRouter>
 		</div>
 	);

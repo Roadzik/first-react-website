@@ -4,8 +4,13 @@ import PostList from "../../components/PostList/PostList";
 import getCurrentTime from "../../getCurrentTime";
 import getPostsByUser from "../../hooks/getPostsByUser";
 import getAllPosts from "../../hooks/getAllPosts";
+import createPost from "../../hooks/createPost";
 
 const Home = () => {
+	if (window.localStorage.getItem("ref") == 0) {
+		window.localStorage.setItem("ref", 1);
+		window.location.reload(false);
+	}
 	const [text, setText] = useState("");
 	const [posts, setPosts] = useState(null);
 	const [time, setTime] = useState(null);
@@ -16,15 +21,7 @@ const Home = () => {
 		e.preventDefault();
 		if (timeDifference < 120 || time == null || text.length < 10) return;
 		setTime(currentTime);
-		const response = await fetch("http://localhost:4000/api/postCreation", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
-			},
-			body: JSON.stringify({ text }),
-		});
-		return response.json();
+		createPost(text);
 	};
 
 	useEffect(() => {

@@ -1,0 +1,21 @@
+.conversation-container {
+	display: flex;
+	flex-direction: column;
+	font-size: 1.3rem;
+	color: white;
+	overflow: scroll;
+	.right p {
+		background-color: #305768;
+		border-radius: 5%;
+	}
+	.right {
+		width: 50%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		margin-left: auto;
+	}
+	.left {
+		width: 50%;
+	}
+}

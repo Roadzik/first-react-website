@@ -88,6 +88,7 @@ app.post("/api/login", async (req, res) => {
 						authenticated: 1,
 						profileId: result[0].profileId,
 						username: result[0].username,
+						profilePicture: result[0].profilePicture,
 					})
 					.end();
 			} else {
@@ -178,7 +179,7 @@ app.post("/api/userList", (req, res) => {
 
 app.post("/api/recipents", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
-		"SELECT DISTINCT(m.recipentId) FROM messages m INNER JOIN users u ON u.profileId = ?",
+		"SELECT DISTINCT(m.recipentId) FROM messages m WHERE senderId IN (?)",
 		req.body.senderId,
 		(err, result) => {
 			if (err) throw err;
@@ -190,10 +191,10 @@ app.post("/api/recipents", authenticateToken, (req, res) => {
 });
 
 app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
-	console.log(req.body.users);
+	console.log(req.body);
 	DB_CONNECTION.query(
 		"SELECT username, profilePicture, profileId FROM users WHERE profileId IN (?)",
-		req.body.users,
+		req.body.data,
 		(err, result) => {
 			if (err) throw err;
 			if (result.length === 0)
@@ -215,13 +216,12 @@ app.post("/api/createRecipent", authenticateToken, (req, res) => {
 });
 
 app.post("/api/getMessages", authenticateToken, (req, res) => {
-	console.log(req.body);
 	DB_CONNECTION.query(
-		"SELECT * FROM messages WHERE recipentId = ?",
-		[req.body.recipentId],
+		"SELECT senderId, recipentId, text FROM messages WHERE recipentId IN ? OR senderId IN ?",
+		[req.body, req.body],
 		(err, result) => {
 			if (err) throw err;
-			return;
+			return res.status(200).json(result).end();
 		}
 	);
 });

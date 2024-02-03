@@ -1,14 +1,12 @@
-import { useEffect } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
 	const handleClick = () => {
 		localStorage.clear();
+		window.location.reload(false);
 	};
-	useEffect(() => {
-		console.log("navbar loaded");
-	}, []);
+
 	return (
 		<nav className='navbar'>
 			<Link to='/'>

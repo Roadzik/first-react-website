@@ -2,25 +2,10 @@ import { useState } from "react";
 import "./Login.css";
 import { Navigate } from "react-router-dom";
 import handleUserInput from "../../hooks/handleUserInput";
-
 const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
-
-	const fetchImage = async (token) => {
-		const response = await fetch(
-			"http://localhost:4000/api/getProfilePicture",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					authorization: `Bearer ${token}`,
-				},
-			}
-		);
-		return response.json();
-	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -40,9 +25,9 @@ const Login = () => {
 		return response.json();
 	};
 
-	if (window.localStorage.getItem("authenticated"))
+	if (window.localStorage.getItem("authenticated")) {
 		return <Navigate replace to='/' />;
-	else {
+	} else {
 		return (
 			<div className='login-container'>
 				<div className='form-container'>
@@ -55,17 +40,14 @@ const Login = () => {
 									window.localStorage.setItem("accessToken", data.accessToken);
 									window.localStorage.setItem("username", data.username);
 									window.localStorage.setItem("profileId", data.profileId);
+									window.localStorage.setItem("ref", 0);
 									window.localStorage.setItem(
 										"authenticated",
 										data.authenticated
 									);
-									fetchImage(window.localStorage.getItem("accessToken")).then(
-										(data) => {
-											window.localStorage.setItem(
-												"profilePicture",
-												data || "user.svg"
-											);
-										}
+									window.localStorage.setItem(
+										"profilePicture",
+										data.profilePicture || "user.svg"
 									);
 								}
 								setError(data.message);
