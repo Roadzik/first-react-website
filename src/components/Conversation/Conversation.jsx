@@ -18,8 +18,10 @@ const Conversation = (props) => {
 	return (
 		<div className='conversation-container'>
 			{messages.map((e) =>
-				e.senderId === window.localStorage.getItem("profileId") ? (
-					<div className='right'>
+				e.text === null ? (
+					<></>
+				) : e.senderId === window.localStorage.getItem("profileId") ? (
+					<div className='right' key={e.id}>
 						<h4>{window.localStorage.getItem("username")}</h4>
 						<img
 							src={window.localStorage.getItem("profilePicture")}
@@ -29,7 +31,7 @@ const Conversation = (props) => {
 						<p>{e.text}</p>
 					</div>
 				) : (
-					<div className='left'>
+					<div className='left' key={e.id}>
 						<h4>{recipent[0].username}</h4>
 						<img
 							src={recipent[0].profilePicture}

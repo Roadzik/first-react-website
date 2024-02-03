@@ -183,18 +183,16 @@ app.post("/api/recipents", authenticateToken, (req, res) => {
 		req.body.senderId,
 		(err, result) => {
 			if (err) throw err;
-			if (result.length === 0)
-				return res.status(200).json({ message: "No Recipents Found" }).end();
+			if (result.length === 0) return res.status(200).json([]).end();
 			res.status(200).json(result).end();
 		}
 	);
 });
 
 app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
-	console.log(req.body);
 	DB_CONNECTION.query(
 		"SELECT username, profilePicture, profileId FROM users WHERE profileId IN (?)",
-		req.body.data,
+		[req.body.data],
 		(err, result) => {
 			if (err) throw err;
 			if (result.length === 0)
@@ -206,18 +204,26 @@ app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
 
 app.post("/api/createRecipent", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
-		"INSERT INTO messages(senderId, recipentId) VALUES(?, ?)",
+		"SELECT DISTINCT(recipentId) FROM messages WHERE senderId = ? AND recipentId = ?",
 		[req.body.senderId, req.body.recipentId],
 		(err, result) => {
 			if (err) throw err;
-			return;
+			if (result.length !== 0) return;
+			DB_CONNECTION.query(
+				"INSERT INTO messages(senderId, recipentId) VALUES(?, ?)",
+				[req.body.senderId, req.body.recipentId],
+				(err, result) => {
+					if (err) throw err;
+					return;
+				}
+			);
 		}
 	);
 });
 
 app.post("/api/getMessages", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
-		"SELECT senderId, recipentId, text FROM messages WHERE recipentId IN ? OR senderId IN ?",
+		"SELECT id, senderId, recipentId, text FROM messages WHERE recipentId IN ? AND senderId IN ? ORDER BY id DESC",
 		[req.body, req.body],
 		(err, result) => {
 			if (err) throw err;

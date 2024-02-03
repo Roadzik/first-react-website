@@ -1,8 +1,9 @@
 .conversation-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	font-size: 1.3rem;
 	color: white;
+	height: 81%;
 	overflow: scroll;
 	.right p {
 		background-color: #305768;
@@ -17,5 +18,19 @@
 	}
 	.left {
 		width: 50%;
+	}
+	.right,
+	.left {
+		margin-bottom: 2rem;
+	}
+	.right p,
+	.right img,
+	.right h4 {
+		margin: 0.2rem;
+	}
+	.left p,
+	.left img,
+	.left h4 {
+		margin: 0.2rem;
 	}
 }

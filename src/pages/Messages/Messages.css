@@ -1,7 +1,7 @@
 .messages {
 	display: grid;
 	grid-template-columns: 1fr 7fr;
-	grid-template-rows: 101vh;
+	grid-template-rows: 90vh;
 	background-color: #111315;
 	.message-list {
 		border-right: 1px solid white;
@@ -16,7 +16,7 @@
 	.send-icon {
 		position: absolute;
 		right: 0;
-		bottom: 0px;
+		bottom: 100px;
 		cursor: pointer;
 	}
 	.send-message {

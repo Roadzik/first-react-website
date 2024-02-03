@@ -1,13 +1,14 @@
 import "./RecipentList.css";
 const RecipentList = (props) => {
 	const recipents = props.recipents;
+	let counter = 0;
 	const fetchMessages = props.fetchMessages;
 	if (recipents.length === 0) return;
-
 	return (
 		<div className='recipent-list'>
 			{recipents.map((e) => (
 				<div
+					key={counter++}
 					onClick={() =>
 						fetchMessages([
 							e.profileId,

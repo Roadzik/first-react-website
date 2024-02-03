@@ -36,6 +36,7 @@ const Messages = () => {
 		}
 		if (users !== null) {
 			getRecipentsData(users).then((data) => {
+				console.log(data);
 				setRecipents(data);
 			});
 		}
