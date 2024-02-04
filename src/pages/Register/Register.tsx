@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import PasswordRequirements from "../../components/PasswordRequirements/PasswordRequirements";
 import "./Register.css";
 import { Navigate } from "react-router-dom";
@@ -33,7 +33,7 @@ const Register = () => {
 		}
 		return 1;
 	};
-	async function handleSubmit(e) {
+	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (!handleUserInput()) {
 			return { message: "Please fill the data" };
@@ -78,7 +78,9 @@ const Register = () => {
 							type='text'
 							name='username'
 							id='username'
-							onInput={(e) => setUsername(e.target.value)}
+							onInput={(e) =>
+								setUsername((e.target as HTMLTextAreaElement).value)
+							}
 						/>
 						<label htmlFor='password'>Password</label>
 						<input
@@ -86,7 +88,7 @@ const Register = () => {
 							name='password'
 							id='password'
 							onInput={(e) => {
-								setPassword(e.target.value);
+								setPassword((e.target as HTMLTextAreaElement).value);
 							}}
 						/>
 						<PasswordRequirements password={password} />

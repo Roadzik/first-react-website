@@ -1,6 +1,8 @@
-import React from "react";
 import "./PasswordRequirements.css";
-const PasswordRequirements = (props) => {
+interface props {
+	password: string;
+}
+const PasswordRequirements = (props: props) => {
 	const password = props.password;
 	return (
 		<div className='password-requirements'>
