@@ -1,4 +1,4 @@
-const handleUserInput = (username, password) => {
+const handleUserInput = (username: string, password: string) => {
 	if (
 		username === "" ||
 		username == null ||

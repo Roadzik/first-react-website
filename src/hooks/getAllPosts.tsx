@@ -1,5 +1,5 @@
-const getUserList = async (id) => {
-	const response = await fetch("http://localhost:4000/api/userList", {
+const getAllPosts = async (id: string) => {
+	const response = await fetch("http://localhost:4000/api/posts", {
 		method: "POST",
 		mode: "cors",
 		headers: { "Content-Type": "application/json" },
@@ -8,4 +8,4 @@ const getUserList = async (id) => {
 	return response.json();
 };
 
-export default getUserList;
+export default getAllPosts;

@@ -1,20 +1,23 @@
 import "./Profile.css";
-import PostList from "../../components/PostList/PostList";
+import PostList from "../PostList/PostList";
 import { useState, useEffect } from "react";
 import getAllPosts from "../../hooks/getAllPosts";
 import { Link, useParams } from "react-router-dom";
 import getUserList from "../../hooks/getUserList";
 import { Navigate } from "react-router-dom";
-
+interface userData {
+	username: string;
+	profilePicture: string;
+}
 const Profile = () => {
 	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
 	const [userData, setUserData] = useState([]);
 	useEffect(() => {
-		getAllPosts(id).then((data) => {
+		getAllPosts(id as string).then((data) => {
 			setPosts(data);
 		});
-		getUserList(id).then((data) => {
+		getUserList(id as string).then((data) => {
 			setUserData(data);
 		});
 	}, []);
