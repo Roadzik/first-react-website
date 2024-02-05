@@ -5,13 +5,26 @@ import Conversation from "../../components/Conversation/Conversation";
 import getRecipentsData from "../../hooks/getRecipentData";
 import getRecipent from "../../hooks/getRecipent";
 
+interface recipents {
+	recipentId: string;
+}
+interface RecipentsData {
+	username: string;
+	profilePicture: string;
+	profileId: string;
+}
 const Messages = () => {
-	const [users, setUsers] = useState(null);
-	const [recipents, setRecipents] = useState([]);
+	const [users, setUsers] = useState<Array<string>>([]);
+	const [recipents, setRecipents] = useState<Array<RecipentsData>>([
+		{
+			username: "",
+			profilePicture: "",
+			profileId: "",
+		},
+	]);
 	const [messages, setMessages] = useState([]);
-	let userIds = [];
-
-	const fetchMessages = async (...props) => {
+	const userIds: string[] = [];
+	const fetchMessages = async (...props: []) => {
 		const response = await fetch("http://localhost:4000/api/getMessages", {
 			method: "POST",
 			headers: {
@@ -26,15 +39,15 @@ const Messages = () => {
 	};
 
 	useEffect(() => {
-		if (users == null) {
+		if (users.length === 0) {
 			getRecipent().then((data) => {
-				data.forEach((e) => {
+				data.forEach((e: recipents) => {
 					userIds.push(e.recipentId);
 				});
 				setUsers(userIds);
 			});
 		}
-		if (users !== null) {
+		if (users.length !== 0) {
 			getRecipentsData(users).then((data) => {
 				console.log(data);
 				setRecipents(data);
@@ -51,7 +64,7 @@ const Messages = () => {
 					<>
 						<Conversation messages={messages} recipents={recipents} />
 						<div className='send-message'>
-							<textarea name='' id='' cols='170' rows='7'></textarea>
+							<textarea name='' id='' cols={170} rows={7}></textarea>
 							<img src='send.svg' alt='' className='send-icon' />
 						</div>
 					</>

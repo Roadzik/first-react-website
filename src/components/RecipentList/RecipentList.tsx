@@ -1,12 +1,21 @@
 import "./RecipentList.css";
-const RecipentList = (props) => {
+interface RecipentsData {
+	username: string;
+	profilePicture: string;
+	profileId: string;
+}
+interface recipents {
+	recipents: RecipentsData[];
+	fetchMessages: Function;
+}
+const RecipentList = (props: recipents) => {
 	const recipents = props.recipents;
 	let counter = 0;
 	const fetchMessages = props.fetchMessages;
 	if (recipents.length === 0) return;
 	return (
 		<div className='recipent-list'>
-			{recipents.map((e) => (
+			{recipents.map((e: RecipentsData) => (
 				<div
 					key={counter++}
 					onClick={() =>

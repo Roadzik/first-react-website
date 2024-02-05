@@ -8,11 +8,16 @@ import { Navigate } from "react-router-dom";
 interface userData {
 	username: string;
 	profilePicture: string;
+	found: Number;
 }
 const Profile = () => {
 	const { id } = useParams();
 	const [posts, setPosts] = useState([]);
-	const [userData, setUserData] = useState([]);
+	const [userData, setUserData] = useState<userData>({
+		username: "",
+		profilePicture: "",
+		found: 200,
+	});
 	useEffect(() => {
 		getAllPosts(id as string).then((data) => {
 			setPosts(data);
@@ -34,7 +39,6 @@ const Profile = () => {
 			}),
 		});
 	};
-	console.log(userData);
 	if (userData.found === 404) return <Navigate replace to='/' />;
 	else {
 		return (

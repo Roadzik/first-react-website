@@ -1,4 +1,4 @@
-const getRecipentsData = async (data) => {
+const getRecipentsData = async (data: string[]) => {
 	const response = await fetch("http://localhost:4000/api/getRecipentsData", {
 		method: "POST",
 		headers: {

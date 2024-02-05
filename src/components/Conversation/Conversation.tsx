@@ -1,13 +1,34 @@
 import { useEffect, useState } from "react";
 import getRecipentsData from "../../hooks/getRecipentData";
 import "./Conversation.css";
-const Conversation = (props) => {
-	const [recipent, setRecipent] = useState([{}]);
+interface messages {
+	senderId: string;
+	recipentId: string;
+	id: string;
+	text: string;
+}
+interface RecipentsData {
+	username: string;
+	profilePicture: string;
+	profileId: string;
+}
+interface props {
+	messages: messages[];
+	recipents: RecipentsData[];
+}
+const Conversation = (props: props) => {
+	const [recipent, setRecipent] = useState<Array<RecipentsData>>([
+		{
+			username: "string",
+			profilePicture: "string",
+			profileId: "string",
+		},
+	]);
 	let messages = props.messages;
-	let data = "";
+	let data: string[] = [];
 	messages.forEach((e) => {
 		if (e.recipentId != window.localStorage.getItem("profileId"))
-			data = e.recipentId;
+			data = [e.recipentId];
 	});
 	console.log(data);
 	useEffect(() => {
@@ -24,7 +45,7 @@ const Conversation = (props) => {
 					<div className='right' key={e.id}>
 						<h4>{window.localStorage.getItem("username")}</h4>
 						<img
-							src={window.localStorage.getItem("profilePicture")}
+							src={window.localStorage.getItem("profilePicture") ?? "user.svg"}
 							alt=''
 							className='profile-picture'
 						/>

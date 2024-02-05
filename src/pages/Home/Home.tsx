@@ -7,17 +7,18 @@ import getAllPosts from "../../hooks/getAllPosts";
 import createPost from "../../hooks/createPost";
 
 const Home = () => {
-	if (window.localStorage.getItem("ref") == 0) {
-		window.localStorage.setItem("ref", 1);
-		window.location.reload(false);
+	if (window.localStorage.getItem("ref") === "0") {
+		window.localStorage.setItem("ref", "1");
+		window.location.reload();
 	}
 	const [text, setText] = useState("");
-	const [posts, setPosts] = useState(null);
-	const [time, setTime] = useState(null);
+	const [posts, setPosts] = useState([]);
+	const [time, setTime] = useState("");
 	let currentTime = getCurrentTime();
-	let timeDifference = (new Date(currentTime) - new Date(time)) / 1000;
+	let timeDifference =
+		(new Date(currentTime).getTime() - new Date(time).getTime()) / 1000;
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (timeDifference < 120 || time == null || text.length < 10) return;
 		setTime(currentTime);
@@ -25,7 +26,7 @@ const Home = () => {
 	};
 
 	useEffect(() => {
-		getAllPosts().then((data) => {
+		getAllPosts("%").then((data) => {
 			setPosts(data);
 		});
 		if (window.localStorage.getItem("authenticated")) {
@@ -70,7 +71,7 @@ const Home = () => {
 							method='POST'
 							onSubmit={(e) =>
 								handleSubmit(e).then(() => {
-									getAllPosts().then((data) => {
+									getAllPosts("%").then((data) => {
 										setPosts(data);
 									});
 								})
@@ -79,11 +80,11 @@ const Home = () => {
 							<textarea
 								name='post'
 								id='post'
-								cols='50'
-								rows='8'
+								cols={50}
+								rows={8}
 								maxLength={255}
 								minLength={10}
-								onInput={(e) => setText(e.target.value)}
+								onInput={(e) => setText((e.target as HTMLInputElement).value)}
 							/>
 							<input type='submit' value='ClickMe' />
 						</form>

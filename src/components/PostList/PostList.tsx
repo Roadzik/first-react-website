@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import "./PostList.css";
-
-const PostList = (props) => {
+interface props {
+	posts: {
+		id: string;
+		profileId: string;
+		profilePicture: string;
+		displayName: string;
+		creationTime: string;
+		text: string;
+	}[];
+}
+const PostList = (props: props) => {
 	const posts = props.posts;
 	if (posts === null) return;
 	return (

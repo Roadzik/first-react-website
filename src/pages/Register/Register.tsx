@@ -78,9 +78,7 @@ const Register = () => {
 							type='text'
 							name='username'
 							id='username'
-							onInput={(e) =>
-								setUsername((e.target as HTMLTextAreaElement).value)
-							}
+							onInput={(e) => setUsername((e.target as HTMLInputElement).value)}
 						/>
 						<label htmlFor='password'>Password</label>
 						<input
@@ -88,7 +86,7 @@ const Register = () => {
 							name='password'
 							id='password'
 							onInput={(e) => {
-								setPassword((e.target as HTMLTextAreaElement).value);
+								setPassword((e.target as HTMLInputElement).value);
 							}}
 						/>
 						<PasswordRequirements password={password} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { Navigate } from "react-router-dom";
 import handleUserInput from "../../hooks/handleUserInput";
@@ -7,7 +7,7 @@ const Login = () => {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!handleUserInput(username, password)) {
 			return setError("Please fill the data");
@@ -40,7 +40,7 @@ const Login = () => {
 									window.localStorage.setItem("accessToken", data.accessToken);
 									window.localStorage.setItem("username", data.username);
 									window.localStorage.setItem("profileId", data.profileId);
-									window.localStorage.setItem("ref", 0);
+									window.localStorage.setItem("ref", "0");
 									window.localStorage.setItem(
 										"authenticated",
 										data.authenticated
@@ -60,14 +60,14 @@ const Login = () => {
 							type='text'
 							name='username'
 							id='username'
-							onInput={(e) => setUsername(e.target.value)}
+							onInput={(e) => setUsername((e.target as HTMLInputElement).value)}
 						/>
 						<label htmlFor='password'>Password</label>
 						<input
 							type='password'
 							name='password'
 							id='password'
-							onInput={(e) => setPassword(e.target.value)}
+							onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
 						/>
 						<input type='submit' value='Login' />
 					</form>
