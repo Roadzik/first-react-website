@@ -1,5 +1,6 @@
 const getAllPosts = async (id: string) => {
-	const response = await fetch("http://localhost:4000/api/posts", {
+	console.log(`${process.env.REACT_APP_BACKEND}/api/posts`);
+	const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/posts`, {
 		method: "POST",
 		mode: "cors",
 		headers: { "Content-Type": "application/json" },

@@ -27,7 +27,7 @@ const Profile = () => {
 		});
 	}, []);
 	const createRecipent = () => {
-		fetch("http://localhost:4000/api/createRecipent", {
+		fetch(`${process.env.REACT_APP_BACKEND}/api/createRecipent`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

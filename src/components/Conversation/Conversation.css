@@ -3,8 +3,8 @@
 	flex-direction: column-reverse;
 	font-size: 1.3rem;
 	color: white;
-	height: 81%;
-	overflow: scroll;
+	height: 89%;
+	overflow-y: scroll;
 	.right p {
 		background-color: #305768;
 		border-radius: 5%;

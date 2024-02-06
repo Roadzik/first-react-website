@@ -15,6 +15,7 @@ interface RecipentsData {
 interface props {
 	messages: messages[];
 	recipents: RecipentsData[];
+	recipent: string;
 }
 const Conversation = (props: props) => {
 	const [recipent, setRecipent] = useState<Array<RecipentsData>>([
@@ -25,17 +26,12 @@ const Conversation = (props: props) => {
 		},
 	]);
 	let messages = props.messages;
-	let data: string[] = [];
-	messages.forEach((e) => {
-		if (e.recipentId != window.localStorage.getItem("profileId"))
-			data = [e.recipentId];
-	});
-	console.log(data);
+	let data = props.recipent;
 	useEffect(() => {
-		getRecipentsData(data).then((data) => {
+		getRecipentsData([data]).then((data) => {
 			setRecipent(data);
 		});
-	}, [messages]);
+	}, []);
 	return (
 		<div className='conversation-container'>
 			{messages.map((e) =>

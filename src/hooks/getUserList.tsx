@@ -1,5 +1,5 @@
 const getUserList = async (id: string) => {
-	const response = await fetch("http://localhost:4000/api/userList", {
+	const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/userList`, {
 		method: "POST",
 		mode: "cors",
 		headers: { "Content-Type": "application/json" },

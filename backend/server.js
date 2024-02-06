@@ -151,6 +151,17 @@ app.post("/api/posts", (req, res) => {
 	);
 });
 
+app.post("/api/sendMessage", authenticateToken, (req, res) => {
+	DB_CONNECTION.query(
+		"INSERT INTO messages(senderId, recipentId, text) VALUES(?,?,?)",
+		[req.body.senderId, req.body.recipentId, req.body.text],
+		(err) => {
+			if (err) throw err;
+			res.status(201).json({ message: "message sent" }).end();
+		}
+	);
+});
+
 app.post("/api/postsByUser", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
 		"SELECT p.creationTime FROM posts p INNER JOIN users u ON p.userID = u.id WHERE u.id = ? ORDER BY p.id DESC LIMIT 1",
@@ -179,8 +190,8 @@ app.post("/api/userList", (req, res) => {
 
 app.post("/api/recipents", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
-		"SELECT DISTINCT(m.recipentId) FROM messages m WHERE senderId IN (?)",
-		req.body.senderId,
+		`SELECT DISTINCT(IF('${req.body.senderId}'=m.recipentId, m.senderId, m.recipentId)) as recipentId FROM messages m WHERE senderId = ? OR recipentId = ?`,
+		[req.body.senderId, req.body.senderId],
 		(err, result) => {
 			if (err) throw err;
 			if (result.length === 0) return res.status(200).json([]).end();

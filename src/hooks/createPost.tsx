@@ -1,5 +1,5 @@
 const createPost = async (text: string) => {
-	const response = await fetch("http://localhost:4000/api/postCreation", {
+	const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/postCreation`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
