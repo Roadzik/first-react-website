@@ -25,10 +25,6 @@
 		font-size: 1.2rem;
 	}
 
-	img {
-		filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(277deg)
-			brightness(121%) contrast(97%);
-	}
 	.profile-picture {
 		filter: none;
 	}

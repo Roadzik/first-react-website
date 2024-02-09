@@ -20,7 +20,7 @@ interface messages {
 	id: string;
 	text: string;
 }
-
+let intervalId: NodeJS.Timeout;
 const Messages = () => {
 	const [message, setMessage] = useState("");
 	const [users, setUsers] = useState<Array<string>>([]);
@@ -92,6 +92,21 @@ const Messages = () => {
 			});
 		}
 	}, [users]);
+
+	useEffect(() => {
+		if (RECIPENT !== "") {
+			if (intervalId !== null) {
+				clearInterval(intervalId);
+			}
+			console.log(intervalId);
+			intervalId = setInterval(() => {
+				fetchMessages([
+					RECIPENT,
+					window.localStorage.getItem("profileId") as string,
+				]);
+			}, 5000);
+		}
+	}, [RECIPENT]);
 	if (
 		window.localStorage.getItem("authenticated") === null ||
 		window.localStorage.getItem("authenticated") !== "1"

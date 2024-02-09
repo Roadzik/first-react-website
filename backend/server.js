@@ -243,4 +243,25 @@ app.post("/api/getMessages", authenticateToken, (req, res) => {
 	);
 });
 
+app.post("/api/getLikes", authenticateToken, (req, res) => {
+	console.log(req.body);
+	DB_CONNECTION.query(
+		"SELECT * FROM likes WHERE postId = ? AND userId = ?",
+		[req.body.postId, req.userData.id],
+		(err, result) => {
+			if (err) throw err;
+			if (result.length > 0) {
+				DB_CONNECTION.query(`DELETE * FROM likes WHERE id = ${result[0].id}`);
+				res.status(200).json({ message: "Unlike" }).end();
+			} else {
+				DB_CONNECTION.query("INSERT INTO likes(postId, userId) VALUES(?,?)", [
+					req.body.postId,
+					req.userData.id,
+				]);
+				res.status(201).json({ message: "Liked" }).end();
+			}
+		}
+	);
+});
+
 app.listen(process.env.PORT);
