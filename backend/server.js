@@ -251,7 +251,7 @@ app.post("/api/getLikes", authenticateToken, (req, res) => {
 		(err, result) => {
 			if (err) throw err;
 			if (result.length > 0) {
-				DB_CONNECTION.query(`DELETE * FROM likes WHERE id = ${result[0].id}`);
+				DB_CONNECTION.query(`DELETE FROM likes WHERE id = ${result[0].id}`);
 				res.status(200).json({ message: "Unlike" }).end();
 			} else {
 				DB_CONNECTION.query("INSERT INTO likes(postId, userId) VALUES(?,?)", [
@@ -260,6 +260,33 @@ app.post("/api/getLikes", authenticateToken, (req, res) => {
 				]);
 				res.status(201).json({ message: "Liked" }).end();
 			}
+		}
+	);
+});
+
+app.post("/api/getLikesOfUser", authenticateToken, (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT postId FROM likes WHERE userId = ?",
+		req.userData.id,
+		(err, result) => {
+			if (err) throw err;
+			if (result.length === 0)
+				return res
+					.status(200)
+					.json([{ message: "No Likes" }])
+					.end();
+			const arrayOfNames = result.map((obj) => obj.postId);
+			return res.status(200).send(Object.values(arrayOfNames)).end();
+		}
+	);
+});
+
+app.post("/api/getAllLikes", (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT postId, COUNT(*) as likesCount FROM likes GROUP BY postId",
+		(err, result) => {
+			if (err) throw err;
+			res.status(200).json(result).end();
 		}
 	);
 });

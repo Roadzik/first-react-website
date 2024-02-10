@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 // import PostInteraction from "../PostInteraction/PostInteraction";
 import "./PostList.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface props {
 	posts: {
 		id: string;
@@ -12,9 +12,28 @@ interface props {
 		text: string;
 	}[];
 }
+interface likes {
+	postId: string;
+	likesCount: string;
+}
 const PostList = (props: props) => {
 	const posts = props.posts;
-	const [image, setImage] = useState("");
+	const [images, setImages] = useState<Array<String>>([]);
+	const [likes, setLikes] = useState<Array<likes>>([
+		{
+			postId: "",
+			likesCount: "",
+		},
+	]);
+	useEffect(() => {
+		getLikes().then((data) => {
+			setImages(data);
+		});
+		getAllLikes().then((data: likes[]) => {
+			setLikes(data);
+		});
+	}, []);
+
 	if (posts === null) return;
 	const handleLike = async (postId: string) => {
 		const response = await fetch(
@@ -28,8 +47,40 @@ const PostList = (props: props) => {
 				body: JSON.stringify({ postId: postId }),
 			}
 		);
+		getLikes().then((data: []) => {
+			setImages(data);
+		});
+		getAllLikes().then((data: likes[]) => {
+			setLikes(data);
+		});
 		return response.json();
 	};
+	const getLikes = async () => {
+		const response = await fetch(
+			`${process.env.REACT_APP_BACKEND}/api/getLikesOfUser`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+				},
+			}
+		);
+		return response.json();
+	};
+	const getAllLikes = async () => {
+		const response = await fetch(
+			`${process.env.REACT_APP_BACKEND}/api/getAllLikes`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		return response.json();
+	};
+	console.log(images);
 	return (
 		<div className='posts'>
 			{posts.map((post) => (
@@ -49,6 +100,10 @@ const PostList = (props: props) => {
 					</div>
 					<p className='post-text'>{post.text}</p>
 					<div className='post-interaction'>
+						{likes.map((like) =>
+							post.id === like.postId ? <p>{like.likesCount}</p> : <></>
+						)}
+
 						<button
 							onClick={() =>
 								handleLike(post.id).then((data) => {
@@ -56,7 +111,11 @@ const PostList = (props: props) => {
 								})
 							}
 						>
-							<img src='like.svg' alt='' />
+							{images.includes(post.id) ? (
+								<img src='liked.svg' alt='' />
+							) : (
+								<img src='like.svg' alt='' />
+							)}
 						</button>
 						<img src='message.svg' alt='' />
 					</div>
