@@ -11,6 +11,7 @@ interface props {
 		creationTime: string;
 		text: string;
 	}[];
+	isError: Function;
 }
 interface likes {
 	postId: string;
@@ -18,6 +19,8 @@ interface likes {
 }
 const PostList = (props: props) => {
 	const posts = props.posts;
+	const setError = props.isError;
+	const authed = window.localStorage.getItem("authenticated") ?? 0;
 	const [images, setImages] = useState<Array<String>>([]);
 	const [likes, setLikes] = useState<Array<likes>>([
 		{
@@ -26,9 +29,11 @@ const PostList = (props: props) => {
 		},
 	]);
 	useEffect(() => {
-		getLikes().then((data) => {
-			setImages(data);
-		});
+		if (authed) {
+			getLikes().then((data) => {
+				setImages(data);
+			});
+		}
 		getAllLikes().then((data: likes[]) => {
 			setLikes(data);
 		});
@@ -80,7 +85,6 @@ const PostList = (props: props) => {
 		);
 		return response.json();
 	};
-	console.log(images);
 	return (
 		<div className='posts'>
 			{posts.map((post) => (
@@ -100,23 +104,29 @@ const PostList = (props: props) => {
 					</div>
 					<p className='post-text'>{post.text}</p>
 					<div className='post-interaction'>
-						{likes.map((like) =>
-							post.id === like.postId ? <p>{like.likesCount}</p> : <></>
-						)}
-
-						<button
-							onClick={() =>
-								handleLike(post.id).then((data) => {
-									console.log(data.message);
-								})
-							}
-						>
-							{images.includes(post.id) ? (
-								<img src='liked.svg' alt='' />
-							) : (
-								<img src='like.svg' alt='' />
+						<div className='likes'>
+							{likes.map((like) =>
+								post.id === like.postId ? <p>{like.likesCount}</p> : <></>
 							)}
-						</button>
+
+							<button
+								onClick={() => {
+									if (authed) {
+										handleLike(post.id).then((data) => {
+											console.log(data.message);
+										});
+									} else {
+										setError("You need to be logged in to do this action.");
+									}
+								}}
+							>
+								{images.includes(post.id) ? (
+									<img src='liked.svg' alt='' />
+								) : (
+									<img src='like.svg' alt='' />
+								)}
+							</button>
+						</div>
 						<img src='message.svg' alt='' />
 					</div>
 				</div>

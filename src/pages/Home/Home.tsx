@@ -1,11 +1,11 @@
 import "./Home.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PostList from "../../components/PostList/PostList";
 import getCurrentTime from "../../getCurrentTime";
 import getPostsByUser from "../../hooks/getPostsByUser";
 import getAllPosts from "../../hooks/getAllPosts";
 import createPost from "../../hooks/createPost";
-
+import { Link } from "react-router-dom";
 const Home = () => {
 	if (window.localStorage.getItem("ref") === "0") {
 		window.localStorage.setItem("ref", "1");
@@ -14,15 +14,19 @@ const Home = () => {
 	const [text, setText] = useState("");
 	const [posts, setPosts] = useState([]);
 	const [time, setTime] = useState("");
+	const element = useRef(null);
+	const [error, setError] = useState("");
 	let currentTime = getCurrentTime();
 	let timeDifference =
 		(new Date(currentTime).getTime() - new Date(time).getTime()) / 1000;
-
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (timeDifference < 120 || time == null || text.length < 10) return;
 		setTime(currentTime);
 		createPost(text);
+	};
+	const isError = (message: string) => {
+		setError(message);
 	};
 
 	useEffect(() => {
@@ -35,11 +39,23 @@ const Home = () => {
 			});
 		}
 	}, []);
-
 	return (
-		<div className='home'>
+		<div className='home' ref={element}>
 			<div className='menu' />
 			<div className='main'>
+				{error !== "" ? (
+					<div className='error'>
+						<div className='text-container'>
+							<p>{error}</p>
+							<p onClick={() => setError("")}>X</p>
+						</div>
+						<Link to='/login'>
+							<button>Login</button>
+						</Link>
+					</div>
+				) : (
+					<></>
+				)}
 				<div className='post-creator'>
 					<div>
 						<div>
@@ -90,7 +106,7 @@ const Home = () => {
 						</form>
 					</div>
 				</div>
-				<PostList posts={posts} />
+				<PostList posts={posts} isError={isError} />
 			</div>
 			<div className='idk' />
 		</div>

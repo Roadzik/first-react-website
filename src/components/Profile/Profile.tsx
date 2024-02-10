@@ -18,6 +18,11 @@ const Profile = () => {
 		profilePicture: "",
 		found: 200,
 	});
+	const [error, setError] = useState("");
+
+	const isError = (message: string) => {
+		setError(message);
+	};
 	useEffect(() => {
 		getAllPosts(id as string).then((data) => {
 			setPosts(data);
@@ -68,7 +73,7 @@ const Profile = () => {
 							)}
 						</div>
 					</div>
-					<PostList posts={posts} />
+					<PostList posts={posts} isError={isError} />
 				</div>
 				<div className='idk'></div>
 			</div>
