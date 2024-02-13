@@ -7,7 +7,6 @@ const Register = React.lazy(() => import("./pages/Register/Register"));
 const Profile = React.lazy(() => import("./components/Profile/Profile"));
 const Footer = React.lazy(() => import("./components/Footer/Footer"));
 const Messages = React.lazy(() => import("./pages/Messages/Messages"));
-
 function App() {
 	return (
 		<div className='App'>

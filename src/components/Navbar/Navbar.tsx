@@ -51,7 +51,7 @@ const Navbar = () => {
 								reloadDocument
 							>
 								<img
-									src={"/" + window.localStorage.getItem("profilePicture")}
+									src={window.localStorage.getItem("profilePicture") ?? ""}
 									alt='User'
 									className='profile-picture'
 								/>

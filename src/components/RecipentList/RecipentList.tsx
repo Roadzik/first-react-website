@@ -28,11 +28,7 @@ const RecipentList = (props: recipents) => {
 						findRecipent(e.profileId);
 					}}
 				>
-					<img
-						src={"/" + e.profilePicture}
-						alt=''
-						className='profile-picture'
-					/>
+					<img src={e.profilePicture} alt='' className='profile-picture' />
 					<h4>{e.username}</h4>
 				</div>
 			))}

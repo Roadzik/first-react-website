@@ -93,7 +93,7 @@ const PostList = (props: props) => {
 						<div>
 							<Link to={"/profile/" + post.profileId}>
 								<img
-									src={"/" + (post.profilePicture || "/user.svg")}
+									src={post.profilePicture || "user.svg"}
 									alt='User'
 									className='profile-picture'
 								/>

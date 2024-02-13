@@ -57,6 +57,23 @@ app.post("/api/postCreation", authenticateToken, (req, res) => {
 	);
 });
 
+app.put("/api/UserDataUpdate", (req, res) => {
+	DB_CONNECTION.query(
+		"UPDATE users SET description = ?, profilePicture = ?, displayName = ?, username = ? WHERE id = ?",
+		[
+			req.body.data.description,
+			req.body.data.profilePicture,
+			req.body.data.displayName,
+			req.body.data.username,
+			req.body.data.id,
+		],
+		(err, result) => {
+			if (err) throw err;
+			res.status(200).json({ message: "data updated" }).end();
+		}
+	);
+});
+
 app.post("/api/getProfilePicture", authenticateToken, (req, res) => {
 	res.json(req.userData.profilePicture);
 });
@@ -99,6 +116,10 @@ app.post("/api/login", async (req, res) => {
 			}
 		}
 	);
+});
+
+app.post("/api/me", authenticateToken, (req, res) => {
+	res.status(200).json(req.userData).end();
 });
 
 app.post("/api/register", async (req, res) => {
@@ -177,7 +198,7 @@ app.post("/api/postsByUser", authenticateToken, (req, res) => {
 app.post("/api/userList", (req, res) => {
 	if (req.body.id === null || req.body.id === undefined) return;
 	DB_CONNECTION.query(
-		"SELECT username, profilePicture FROM users WHERE profileId = ?",
+		"SELECT username, profilePicture, displayName FROM users WHERE profileId = ?",
 		req.body.id,
 		(err, result) => {
 			if (result.length === 0)
