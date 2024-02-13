@@ -46,7 +46,10 @@ const Navbar = () => {
 				) : (
 					<>
 						<li>
-							<Link to={"/profile/" + window.localStorage.getItem("profileId")}>
+							<Link
+								to={"/profile/" + window.localStorage.getItem("profileId")}
+								reloadDocument
+							>
 								<img
 									src={"/" + window.localStorage.getItem("profilePicture")}
 									alt='User'

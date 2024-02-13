@@ -4,12 +4,7 @@
 	font-size: 1.3rem;
 	display: grid;
 	grid-template-columns: 1fr 4fr 1fr;
-	height: 100vh;
-	.main {
-		display: flex;
-		flex-direction: column;
-		height: fit-content;
-	}
+	height: fit-content;
 	.menu {
 		border-right: 1px solid white;
 	}
@@ -26,7 +21,7 @@
 		flex-direction: column;
 		height: fit-content;
 		border-bottom: 1px solid white;
-		height: 50%;
+		height: 30vh;
 		padding: 5rem 3rem;
 	}
 	.data-container {

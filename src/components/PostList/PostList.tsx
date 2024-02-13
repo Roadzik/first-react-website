@@ -93,7 +93,7 @@ const PostList = (props: props) => {
 						<div>
 							<Link to={"/profile/" + post.profileId}>
 								<img
-									src={"/" + (post.profilePicture || "user.svg")}
+									src={"/" + (post.profilePicture || "/user.svg")}
 									alt='User'
 									className='profile-picture'
 								/>
@@ -121,13 +121,13 @@ const PostList = (props: props) => {
 								}}
 							>
 								{images.includes(post.id) ? (
-									<img src='liked.svg' alt='' />
+									<img src='/liked.svg' alt='' />
 								) : (
-									<img src='like.svg' alt='' />
+									<img src='/like.svg' alt='' />
 								)}
 							</button>
 						</div>
-						<img src='message.svg' alt='' />
+						<img src='/message.svg' alt='' />
 					</div>
 				</div>
 			))}
