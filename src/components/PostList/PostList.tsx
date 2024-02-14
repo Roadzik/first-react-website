@@ -10,6 +10,7 @@ interface props {
 		displayName: string;
 		creationTime: string;
 		text: string;
+		postId: string;
 	}[];
 	isError: Function;
 }
@@ -88,7 +89,11 @@ const PostList = (props: props) => {
 	return (
 		<div className='posts'>
 			{posts.map((post) => (
-				<div className='post-container' key={post.id}>
+				<Link
+					to={`/posts/${post.postId}`}
+					className='post-container'
+					key={post.id}
+				>
 					<div className='top'>
 						<div>
 							<Link to={"/profile/" + post.profileId}>
@@ -129,7 +134,7 @@ const PostList = (props: props) => {
 						</div>
 						<img src='/message.svg' alt='' />
 					</div>
-				</div>
+				</Link>
 			))}
 		</div>
 	);

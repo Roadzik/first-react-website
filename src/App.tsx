@@ -6,6 +6,7 @@ const Login = React.lazy(() => import("./pages/Login/Login"));
 const Register = React.lazy(() => import("./pages/Register/Register"));
 const Profile = React.lazy(() => import("./components/Profile/Profile"));
 const Footer = React.lazy(() => import("./components/Footer/Footer"));
+const Posts = React.lazy(() => import("./components/Posts/Posts"));
 const Messages = React.lazy(() => import("./pages/Messages/Messages"));
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 							<Route path='/*' element={<Home />} />
 							<Route path='/profile/:id' element={<Profile />} />
 							<Route path='/messages' element={<Messages />}></Route>
+							<Route path='/posts/:id' element={<Posts />}></Route>
 						</Routes>
 					</Suspense>
 					<Footer />

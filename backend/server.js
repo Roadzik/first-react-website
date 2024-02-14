@@ -48,8 +48,8 @@ app.post("/api/postCreation", authenticateToken, (req, res) => {
 		return res.status(401).json({ message: "Invalid parameters!" }).end();
 	}
 	DB_CONNECTION.query(
-		"INSERT INTO posts(text, userID) VALUES (?,?)",
-		[TEXT, req.userData.id],
+		"INSERT INTO posts(text, userID, postId) VALUES (?,?,?)",
+		[TEXT, req.userData.id, crypto.randomBytes(16).toString("hex")],
 		(err, result) => {
 			if (err) throw err;
 			return res.status(201).json("Post created").end();
@@ -163,7 +163,7 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/posts", (req, res) => {
 	if (req.body.id === null || req.body.id === undefined) req.body.id = "%";
 	DB_CONNECTION.query(
-		"SELECT p.id, p.text, p.creationTime, u.profilePicture, u.displayName, u.profileId FROM posts p INNER JOIN users u ON p.userID = u.id WHERE u.profileId LIKE ? ORDER BY id DESC",
+		"SELECT p.id, p.text, p.creationTime, p.postId, u.profilePicture, u.displayName, u.profileId FROM posts p INNER JOIN users u ON p.userID = u.id WHERE u.profileId LIKE ? ORDER BY id DESC",
 		req.body.id,
 		(err, result) => {
 			if (err) throw err;
@@ -194,7 +194,16 @@ app.post("/api/postsByUser", authenticateToken, (req, res) => {
 		}
 	);
 });
-
+app.post("/api/getPost", (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT posts.*, users.profilePicture, users.username, users.profileId FROM posts INNER JOIN users ON posts.userID = users.id  WHERE postId = ? ",
+		req.body.id,
+		(err, result) => {
+			if (err) res.status(400).json(err).end();
+			res.status(200).json(result[0]).end();
+		}
+	);
+});
 app.post("/api/userList", (req, res) => {
 	if (req.body.id === null || req.body.id === undefined) return;
 	DB_CONNECTION.query(
@@ -233,7 +242,16 @@ app.post("/api/getRecipentsData", authenticateToken, (req, res) => {
 		}
 	);
 });
-
+app.post("/api/getLikesOfPost", (req, res) => {
+	DB_CONNECTION.query(
+		"SELECT *,  COUNT(*) as likesCount FROM likes WHERE postId = ?",
+		req.body.id,
+		(err, result) => {
+			if (err) res.status(400).json(err).end();
+			res.status(200).json(result).end();
+		}
+	);
+});
 app.post("/api/createRecipent", authenticateToken, (req, res) => {
 	DB_CONNECTION.query(
 		"SELECT DISTINCT(recipentId) FROM messages WHERE senderId = ? AND recipentId = ?",
